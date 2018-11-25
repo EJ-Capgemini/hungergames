@@ -19,20 +19,17 @@ public class CareerConstestant extends Contestant implements Role{
         addStartingGear();
     }
 
+    /*
+        Of CareerContestant krijgt een wapen of armour. Nooit beide en gelijke kans.
+     */
     private void addStartingGear(){
         int randomWeaponOrArmour = (int)(Math.random() * 2);
         Random random = new Random();
 
         if (randomWeaponOrArmour == 0){
-            List<WeaponChoice> choices = Collections.unmodifiableList(Arrays.asList(WeaponChoice.values()));
-            WeaponChoice choice = choices.get(random.nextInt(choices.size()));
-            Weapon weapon = new Weapon(choice, choice.getDps());
-            setWeapon(weapon);
+            lootWeapon();
         } else {
-            List<ArmourChoice> choices = Collections.unmodifiableList(Arrays.asList(ArmourChoice.values()));
-            ArmourChoice choice = choices.get(random.nextInt(choices.size()));
-            Armour armour = new Armour(choice, choice.getDefence());
-            setArmour(armour);
+            lootArmour();
         }
     }
 

@@ -5,15 +5,16 @@ public class Food {
     private boolean used = false;
 
     public Food() {
-        int healAmount = (int)(Math.random() * 31) + 10;
+        int healAmount = (int)(Math.random() * 16) + 10;
         this.healAmount = healAmount;
     }
 
-    public int getHealAmount() {
+    public int eat() {
+        this.used = true;
         return healAmount;
     }
 
-    public void isUsed(){
-        this.used = true;
+    public boolean isUsed(){
+        return used;
     }
 }

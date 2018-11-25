@@ -1,7 +1,12 @@
 package participants;
 
-import loot.Armour;
-import loot.Weapon;
+import loot.*;
+
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public abstract class Contestant {
     int id;
@@ -10,9 +15,12 @@ public abstract class Contestant {
     double attack;
     double defence;
     double health;
+    double maxHealth;
     double luck;
     Weapon weapon;
     Armour armour;
+
+    boolean inBattle = false;
 
     public Contestant(int id, String name, Gender gender, double attack, double defence, double health, double luck) {
         this.id = id;
@@ -21,7 +29,32 @@ public abstract class Contestant {
         this.attack = attack;
         this.defence = defence;
         this.health = health;
+        this.maxHealth = health;
         this.luck = luck;
+    }
+
+    public void lootWeapon(){
+        Random random = new Random();
+        List<WeaponChoice> choices = Collections.unmodifiableList(Arrays.asList(WeaponChoice.values()));
+        WeaponChoice choice = choices.get(random.nextInt(choices.size()));
+        Weapon weapon = new Weapon(choice, choice.getDps());
+        setWeapon(weapon);
+    }
+
+    public void lootArmour(){
+        Random random = new Random();
+        List<ArmourChoice> choices = Collections.unmodifiableList(Arrays.asList(ArmourChoice.values()));
+        ArmourChoice choice = choices.get(random.nextInt(choices.size()));
+        Armour armour = new Armour(choice, choice.getDefence());
+        setArmour(armour);
+    }
+
+    public void setHealth(double health) {
+        this.health = health > maxHealth ? maxHealth : health;
+    }
+
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     public void setWeapon(Weapon weapon) {
@@ -47,11 +80,11 @@ public abstract class Contestant {
     }
 
     public double getAttack() {
-        return weapon == null ? attack : attack + weapon.getAttack();
+        return Math.round(weapon == null ? attack : attack + weapon.getAttack());
     }
 
     public double getDefence() {
-        return armour == null ? defence : defence + armour.getDefence();
+        return Math.round(armour == null ? defence : defence + armour.getDefence());
     }
 
     public int getId() {
@@ -67,18 +100,18 @@ public abstract class Contestant {
     }
 
     public double getHealth() {
-        return health;
+        return Math.round(health);
+    }
+
+    public double getMaxHealth() {
+        return Math.round(maxHealth);
     }
 
     public double getLuck() {
-        return luck;
+        return Math.round(luck);
     }
 
-    public Weapon getWeapon() {
-        return weapon;
-    }
-
-    public Armour getArmour() {
-        return armour;
+    public boolean isInBattle() {
+        return inBattle;
     }
 }
